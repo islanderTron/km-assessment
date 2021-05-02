@@ -1,0 +1,313 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Technical Assessment
+  description: >
+    An API to run the game which is designed by Sid Sackson. 
+  contact:
+    name: Paul Uncangco
+    email: islandertron@gmail.com
+paths:
+  /initalize:
+    get: 
+      summary: Start the game
+      tags: 
+        - initalization
+      responses:
+        '200':
+          description: Start the game
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitalizeGame'
+  /node_clicked:
+    get:
+      summary: Clicked on node
+      tags: 
+        - node
+      responses: 
+        '200':
+          description: A JSON array of node's corration
+          content: 
+            applicatoin/json:
+              schema: 
+                $ref: '#/components/schemas/NodeClicked'
+        '404':
+          description: resource not found
+          content: 
+            applicatoin/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /valid_start_node:
+    get:
+      summary: Valid the second node
+      tags: 
+        - node
+      responses: 
+        '200':
+          description: Click the second node after first node.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValideStartNode'
+        '404':
+          description: resource not found
+          content: 
+            applicatoin/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invalid_start_node:
+    get:
+      summary: Invalid the second node
+      tags:
+        - node
+      responses:
+        '200':
+          description: Invalid the second node.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidStartNode'
+        '404':
+          description: resource not found
+          content: 
+            applicatoin/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /valid_end_node:
+    get:
+      summary: Select a second node
+      tags:
+        - node
+      responses:
+        '200':
+          description: Second node
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidEndNode'
+        '404':
+          description: resource not found
+          content: 
+            applicatoin/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invalid_end_node:
+    get:
+      summary: Invalid line
+      tags:
+        - node
+      responses:
+        '201':
+          description: Invalid line
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidEndNode'
+        '404':
+          description: resource not found
+          content: 
+            applicatoin/json:
+              schema: 
+                $ref: '#/components/schemas/Error'
+        default:
+          description: unexpected error
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /update_text:
+    post: 
+      summary: Inform the player to make their move
+      description: Remind the player to make their move
+      tags: 
+        - Move
+      responses:
+        '200':
+          description: Update the text
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateText'
+components:
+  schemas:
+    InitalizeGame:
+      properties:
+        msg:
+          type: string
+          example: INITALIZE
+        body:
+          $ref: '#/components/schemas/IntializeBody'
+    IntializeBody:
+      properties:
+        newLine:
+          type: string
+          example: null
+        heading:
+          type: string
+          example: Player 1
+        message: 
+          type: string
+          example: Awaiting Player 1's Move
+    UpdateText:
+      properties:
+        msg:
+          type: string
+          example: UPDATE_TEXT
+        body:
+          $ref: '#/components/schemas/UpdateTextBody'
+    UpdateTextBody:
+      properties:
+        newLine:
+          type: string
+          example: null
+        heading: 
+          type: string
+          example: Player 2
+        message: 
+          type: string
+          example: Are you asleep?
+    InvalidEndNode:
+      properties:
+        msg:
+          type: string
+          example: INVALID_END_NODE
+        body:
+          $ref: '#/components/schemas/InvalidEndNodeBody'
+    InvalidEndNodeBody:
+      properties:
+        newLine:
+          type: string
+          example: null
+        heading: 
+          type: string
+          example: Player 2
+        message:
+          type: string
+          example: Invalid
+    ValidEndNode:
+      properties:
+        msg: 
+          type: string
+          example: VALID_END_NODE
+        body:
+          $ref: '#/components/schemas/ValidEndNodeBody'
+    ValidEndNodeBody:
+      properties:
+        newLine:
+          $ref: '#/components/schemas/Line'
+        heading:
+          type: string
+          example: Player 1
+        message:
+          type: string
+          example: null
+    InvalidStartNode:
+      properties:
+        msg:
+          type: string
+          example: INVALID_START_NODE
+        body:
+          $ref: '#/components/schemas/InvalidBody'
+    InvalidBody:
+      properties:
+        newLine:
+          type: string
+          example: null
+        heading:
+          type: string
+          example: Player 2
+        message:
+          type: string
+          example: Not a valid starting position
+    ValideStartNode:
+      properties:
+        msg: 
+          type: string
+          example: VALID_START_NODE
+        body:
+          $ref: '#/components/schemas/ValidBody'
+    ValidBody:
+      properties:
+        newLine:
+          type: string
+          example: null
+        heading: 
+          type: string
+          example: Player 2
+        message:
+          type: string
+          example: Select a second node to complete the line.
+    NodeClicked: 
+      properties:
+        msg:
+          type: string
+          example: NODE_CLICKED
+        body: 
+          $ref: '#/components/schemas/PointStart'
+    Line:
+      properties:
+        start:
+          $ref: '#/components/schemas/PointStart'
+        end:
+          $ref: '#/components/schemas/PointEnd'
+    PointStart:
+      required:
+        - x
+        - y
+      properties:
+        x:
+          type: number
+          example: 0
+        y: 
+          type: number
+          example: 3
+    PointEnd:
+      required:
+        - x
+        - y
+      properties:
+        x:
+          type: number
+          example: 4
+        y: 
+          type: number
+          example: 4
+    Error:
+      required:
+        - message
+      properties:
+        code:
+          description: |
+            This will be a 4-digit code supplementary to the standard
+            2xx, 4xx HTTP status codes. These will provide more specific
+            details as to the error.
+          type: integer
+          example: 1001
+        message:
+          type: string
+          example: Could not connect to database
