@@ -13,10 +13,10 @@ function Circles({ firstNodesState, addNumber, addSecondNode, invalidNode, inval
   const [nodes, setNodes] = useState({});
   const [lines, setLines] = useState({});
   const [index, setIndex] = useState(0);
+  const [player, setPlayer] = useState('Player 1');
   const circlesMap = useRef();
   const apiUri = process.env.REACT_APP_API_PATH;
 
-  console.log(apiUri)
   /**
    * LIFECYCLE METHODS
    */
@@ -36,11 +36,12 @@ function Circles({ firstNodesState, addNumber, addSecondNode, invalidNode, inval
 
       validEndNode({
         newLine: nodes,
-        player: 'Player 2'
+        player: player ? 'Player 2': 'Player 2'
       });
     }
-    // getInitalize();
-  }, [nodes, lines, validEndNode]);
+    // console.log(player);
+    getInitalize();
+  }, [nodes, lines, validEndNode, player]);
 
   /** */
 
@@ -98,7 +99,7 @@ function Circles({ firstNodesState, addNumber, addSecondNode, invalidNode, inval
       if (!nodes.start) {
         
         addNumber(temp);
-        getNodeClicked(temp)
+        // getNodeClicked(temp) // <-- HTTP METHOD 
         setActiveNodes({
           ...activeNodes,
           0: temp
@@ -148,6 +149,12 @@ function Circles({ firstNodesState, addNumber, addSecondNode, invalidNode, inval
             ...nodes,
             end: temp
           });
+
+          if(player === 'Player 1') {
+            setPlayer('Player 2');
+          } else {
+            setPlayer('Player 1')
+          }
 
           addSecondNode(temp);
           return clickedNodes;
@@ -236,6 +243,7 @@ function Circles({ firstNodesState, addNumber, addSecondNode, invalidNode, inval
         <Lines nodes={nodes} lines={lines} circles={circlesMap}/>
         {renderCircles()}
       </div>
+      <p style={{textAlign: 'center'}}>{player}</p>
       {renderInvalidNode()}
     </div>
   )
